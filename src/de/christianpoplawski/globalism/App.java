@@ -1,4 +1,4 @@
-package de.christianpoplawski.javaBase;
+package de.christianpoplawski.globalism;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;

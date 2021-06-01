@@ -1,4 +1,4 @@
-package de.christianpoplawski.javaBase;
+package de.christianpoplawski.globalism;
 import javax.swing.JPanel;
 
 public class Board extends JPanel {
