@@ -11,8 +11,11 @@ public class App extends JFrame {
     private void initUI() {
         add(new Board());
 
+        setResizable(false);
+        pack();
+
         setSize(330, 330);
-        setTitle("Donut");
+        setTitle("animation");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }

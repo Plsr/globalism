@@ -1,55 +1,106 @@
 package de.christianpoplawski.globalism;
-import javax.swing.JPanel;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 
 
-public class Board extends JPanel {
-    // public Board() {}
+public class Board extends JPanel implements Runnable {
+    private final int B_WIDTH = 350;
+    private final int B_HEIGHT = 350;
+    private final int INITIAL_X = -40;
+    private final int INITAL_Y = -40;
+    private final int DELAY = 25;
+
+    private Image star;
+    private Thread animator;
+    private int x, y;
+
+    public Board() {
+        initBoard();
+    }
+
+    private void loadImage() {
+        ImageIcon ii = new ImageIcon("src/resources/star.png");
+        star = ii.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
+    }
+
+    private void initBoard() {
+        setBackground(Color.GRAY);
+        setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
+
+        loadImage();
+
+        x = INITIAL_X;
+        y = INITAL_Y;
+    }
+
+    @Override
+    public void addNotify() {
+        super.addNotify();
+
+        animator = new Thread(this);
+        animator.start();
+    }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        drawDonut(g);
+        drawStar(g);
     }
 
-    private void drawDonut(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
+    private void drawStar(Graphics g) {
+        g.drawImage(star, x, y, this);
+        Toolkit.getDefaultToolkit().sync();
+    }
 
-        RenderingHints rh = new RenderingHints(
-            RenderingHints.KEY_ANTIALIASING,
-            RenderingHints.VALUE_ANTIALIAS_ON
-        );
+    private void cycle() {
+        x += 1;
+        y +=1;
 
-        rh.put(
-            RenderingHints.KEY_RENDERING, 
-            RenderingHints.VALUE_RENDER_QUALITY
-        );
+        if (y > B_HEIGHT) {
+            y = INITAL_Y;
+            x = INITIAL_X;
+        }
+    }
 
-        g2d.setRenderingHints(rh);
+    @Override
+    public void run() {
+        long beforeTime, timeDiff, sleep;
 
+        beforeTime = System.currentTimeMillis();
 
-        Dimension size = getSize();
-        double w = size.getWidth();
-        double h = size.getHeight();
+        while (true) {
+            cycle();
+            repaint();
 
-        Ellipse2D e = new Ellipse2D.Double(0, 0, 80, 130);
-        g2d.setStroke(new BasicStroke(1));
-        g2d.setColor(Color.gray);
+            timeDiff = System.currentTimeMillis() - beforeTime;
+            sleep = DELAY - timeDiff;
 
-        for (double deg = 0; deg < 360; deg +=5) {
-            AffineTransform at = 
-                AffineTransform.getTranslateInstance(w/2, h/2);
-            at.rotate(Math.toRadians(deg));
-            g2d.draw(at.createTransformedShape(e));
+            if (sleep > 0) {
+                sleep = 2;
+            }
+
+            try {
+                Thread.sleep(sleep);
+            } catch (InterruptedException e) {
+                String msg = String.format(
+                    "Thread interuppted: %s",
+                    e.getMessage()
+                );
+
+                JOptionPane.showMessageDialog(this, msg, "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+
+            beforeTime = System.currentTimeMillis();
+
         }
     }
 }
