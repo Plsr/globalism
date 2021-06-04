@@ -36,8 +36,7 @@ public class Board extends JPanel implements Runnable {
 
         loadImage();
 
-        x = INITIAL_X;
-        y = INITAL_Y;
+        resetXY();
     }
 
     @Override
@@ -64,9 +63,13 @@ public class Board extends JPanel implements Runnable {
         y +=1;
 
         if (y > B_HEIGHT) {
-            y = INITAL_Y;
-            x = INITIAL_X;
+            resetXY();
         }
+    }
+
+    private void resetXY() {
+        y = INITAL_Y;
+        x = INITIAL_X;
     }
 
     @Override
