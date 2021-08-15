@@ -14,7 +14,7 @@ public class App extends JFrame {
         setResizable(false);
         //pack();
 
-        setSize(330, 330);
+        setSize(660, 660);
         setTitle("animation");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
