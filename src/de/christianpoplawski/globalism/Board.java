@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 
 
@@ -32,8 +33,6 @@ public class Board extends JPanel implements Runnable, ActionListener {
         setFocusable(true);
 
         spaceShip = new SpaceShip(ICRAFT_X, ICRAFT_Y);
-        System.out.println(spaceShip.getX());
-        System.out.println(spaceShip.getY());
         
         Timer timer = new Timer(DELAY, this);
         timer.start();
@@ -46,6 +45,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
 
     private void step() {
         spaceShip.move();
+        updateMissiles();
 
         repaint(
             spaceShip.getX() - 1,
@@ -55,7 +55,20 @@ public class Board extends JPanel implements Runnable, ActionListener {
         );
     }
 
-    @Override
+    private void updateMissiles() {
+		List<Missile> missiles = spaceShip.getMissiles();
+		for (int i = 0; i < missiles.size(); i++) {
+			Missile missile = missiles.get(i);
+			if (missile.isVisible()) {
+				missile.move();
+			} else {
+				missiles.remove(i);
+			}
+		}
+		
+	}
+
+	@Override
     public void addNotify() {
         super.addNotify();
 
@@ -74,6 +87,12 @@ public class Board extends JPanel implements Runnable, ActionListener {
     	Graphics2D g2d = (Graphics2D) g;
     	
     	g2d.drawImage(spaceShip.getImage(), spaceShip.getX(), spaceShip.getY(), this);
+    	
+    	List<Missile> missiles = spaceShip.getMissiles();
+    	for (Missile missile : missiles) {
+    		g2d.drawImage(missile.getImage(), missile.getX(), missile.getY(), this);
+    	}
+    	
     			
     }
 
@@ -85,7 +104,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
         beforeTime = System.currentTimeMillis();
 
         while (true) {
-            // repaint();
+             repaint();
 
             timeDiff = System.currentTimeMillis() - beforeTime;
             sleep = DELAY - timeDiff;
