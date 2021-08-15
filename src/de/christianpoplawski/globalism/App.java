@@ -12,7 +12,7 @@ public class App extends JFrame {
         add(new Board());
 
         setResizable(false);
-        pack();
+        //pack();
 
         setSize(330, 330);
         setTitle("animation");

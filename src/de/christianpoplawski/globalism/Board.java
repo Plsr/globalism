@@ -1,42 +1,56 @@
 package de.christianpoplawski.globalism;
 import java.awt.Color;
-import java.awt.Dimension;
+
 import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.Graphics2D;
 import java.awt.Toolkit;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 
-public class Board extends JPanel implements Runnable {
-    private final int B_WIDTH = 350;
-    private final int B_HEIGHT = 350;
-    private final int INITIAL_X = -40;
-    private final int INITAL_Y = -40;
+public class Board extends JPanel implements Runnable, ActionListener {
     private final int DELAY = 25;
-
-    private Image star;
     private Thread animator;
-    private int x, y;
+    private SpaceShip spaceShip;
 
     public Board() {
         initBoard();
     }
 
-    private void loadImage() {
-        ImageIcon ii = new ImageIcon("src/resources/star.png");
-        star = ii.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
+    private void initBoard() {
+        addKeyListener(new TAdapter());
+        setBackground(Color.WHITE);
+        setFocusable(true);
+
+        spaceShip = new SpaceShip();
+        System.out.println(spaceShip.getX());
+        System.out.println(spaceShip.getY());
+        
+        Timer timer = new Timer(DELAY, this);
+        timer.start();
     }
 
-    private void initBoard() {
-        setBackground(Color.GRAY);
-        setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        step();
+    }
 
-        loadImage();
+    private void step() {
+        spaceShip.move();
 
-        resetXY();
+        repaint(
+            spaceShip.getX() - 1,
+            spaceShip.getY() -1,
+            spaceShip.getWidth() + 2,
+            spaceShip.getHeight() + 2
+        );
     }
 
     @Override
@@ -50,27 +64,17 @@ public class Board extends JPanel implements Runnable {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        drawStar(g);
-    }
-
-    private void drawStar(Graphics g) {
-        g.drawImage(star, x, y, this);
+        doDrawing(g);
         Toolkit.getDefaultToolkit().sync();
     }
-
-    private void cycle() {
-        x += 1;
-        y +=1;
-
-        if (y > B_HEIGHT) {
-            resetXY();
-        }
+    
+    private void doDrawing(Graphics g) {
+    	Graphics2D g2d = (Graphics2D) g;
+    	
+    	g2d.drawImage(spaceShip.getImage(), spaceShip.getX(), spaceShip.getY(), this);
+    			
     }
 
-    private void resetXY() {
-        y = INITAL_Y;
-        x = INITIAL_X;
-    }
 
     @Override
     public void run() {
@@ -79,8 +83,7 @@ public class Board extends JPanel implements Runnable {
         beforeTime = System.currentTimeMillis();
 
         while (true) {
-            cycle();
-            repaint();
+            // repaint();
 
             timeDiff = System.currentTimeMillis() - beforeTime;
             sleep = DELAY - timeDiff;
@@ -104,6 +107,18 @@ public class Board extends JPanel implements Runnable {
 
             beforeTime = System.currentTimeMillis();
 
+        }
+    }
+
+    private class TAdapter extends KeyAdapter {
+        @Override
+        public void keyReleased(KeyEvent e) {
+            spaceShip.keyReleased(e);
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            spaceShip.keyPressed(e);
         }
     }
 }
