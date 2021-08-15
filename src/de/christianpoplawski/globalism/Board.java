@@ -17,6 +17,8 @@ import java.awt.event.KeyEvent;
 
 public class Board extends JPanel implements Runnable, ActionListener {
     private final int DELAY = 25;
+    private final int ICRAFT_X = 40;
+    private final int ICRAFT_Y = 60;
     private Thread animator;
     private SpaceShip spaceShip;
 
@@ -29,7 +31,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
         setBackground(Color.WHITE);
         setFocusable(true);
 
-        spaceShip = new SpaceShip();
+        spaceShip = new SpaceShip(ICRAFT_X, ICRAFT_Y);
         System.out.println(spaceShip.getX());
         System.out.println(spaceShip.getY());
         
@@ -48,8 +50,8 @@ public class Board extends JPanel implements Runnable, ActionListener {
         repaint(
             spaceShip.getX() - 1,
             spaceShip.getY() -1,
-            spaceShip.getWidth() + 2,
-            spaceShip.getHeight() + 2
+            spaceShip.width + 2,
+            spaceShip.height + 2
         );
     }
 

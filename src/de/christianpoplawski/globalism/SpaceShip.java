@@ -6,55 +6,30 @@ import java.awt.image.ImageObserver;
 
 import javax.swing.ImageIcon;
 
-public class SpaceShip {
+public class SpaceShip extends Sprite {
     private int dx;
     private int dy;
-    private int x = 140;
-    private int y = 160;
     private int w;
     private int h;
     private Image image;
 
-    public SpaceShip() {
-        loadImage();
+    public SpaceShip(int x, int y) {
+        super(x, y);
+        
+        initSpaceship();
+        
     }
 
-    private void loadImage() {
-        ImageIcon ii = new ImageIcon("src/resources/ship.png");
-        ii.setImage(ii.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-        image = ii.getImage();
-        
-		w = image.getWidth(null);
-        h = image.getHeight(null);
-    }
+    private void initSpaceship() {
+    	loadImage("src/resources/ship.png");
+    	getImageDimensions();
+		
+	}
 
     public void move() {
         x += dx;
         y += dy;
     }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    } 
-
-    public int getWidth() {
-        
-        return w;
-    }
-    
-    public int getHeight() {
-        
-        return h;
-    }    
-
-    public Image getImage() {
-        
-        return image;
-    } 
     
     public void keyPressed(KeyEvent e) {
         System.out.println("Key pressed");
