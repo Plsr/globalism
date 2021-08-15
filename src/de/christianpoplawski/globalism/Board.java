@@ -23,8 +23,8 @@ public class Board extends JPanel implements Runnable, ActionListener {
     private final int DELAY = 25;
     private final int ICRAFT_X = 40;
     private final int ICRAFT_Y = 60;
-    private final int B_WIDTH = 660;
-    private final int B_HEIGHT= 660;
+    private int width;
+    private int height;
     private Thread animator;
     private Timer timer;
     private SpaceShip spaceShip;
@@ -39,7 +39,9 @@ public class Board extends JPanel implements Runnable, ActionListener {
             {930, 159}, {590, 80}, {530, 60},
         };
 
-    public Board() {
+    public Board(int width, int height) {
+    	this.width = width;
+    	this.height = height;
         initBoard();
     }
 
@@ -177,7 +179,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
 
     	g.setColor(Color.BLACK);
     	g.setFont(small);
-    	g.drawString(msg, (B_WIDTH - fm.stringWidth(msg)) / 2, B_HEIGHT / 2);
+    	g.drawString(msg, (width - fm.stringWidth(msg)) / 2, height / 2);
 	}
 
 	private void drawObjects(Graphics g) {

@@ -4,17 +4,20 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 public class App extends JFrame {
+	private final int WIDTH = 660;
+	private final int HEIGHT = 660;
+	
     public App() {
         initUI();
     }
 
     private void initUI() {
-        add(new Board());
+        add(new Board(WIDTH, HEIGHT));
 
         setResizable(false);
-        //pack();
+        pack();
 
-        setSize(660, 660);
+        setSize(WIDTH, HEIGHT);
         setTitle("animation");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

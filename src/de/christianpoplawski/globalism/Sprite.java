@@ -20,8 +20,16 @@ public class Sprite {
 	}
 	
 	protected void loadImage(String imageName) {
+		loadImage(imageName, 30);
+	}
+	
+	protected void loadImage(String imageName, int size) {
+		loadImage(imageName, size, size);
+	}
+	
+	protected void loadImage(String imageName, int width, int height) {
 		ImageIcon ii = new ImageIcon(imageName);
-		ii.setImage(ii.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+		ii.setImage(ii.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
         image = ii.getImage();
 	}
 	
