@@ -50,19 +50,19 @@ public class SpaceShip extends Sprite {
         }
 
         if (key == KeyEvent.VK_LEFT) {
-            dx = -2;
+            dx = -stepSize;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
-            dx = 2;
+            dx = stepSize;
         }
 
         if (key == KeyEvent.VK_UP) {
-            dy = -2;
+            dy = -stepSize;
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            dy = 2;
+            dy = stepSize;
         }
     }
 

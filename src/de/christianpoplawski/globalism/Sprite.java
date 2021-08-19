@@ -10,6 +10,7 @@ public class Sprite {
 	protected int y;
 	protected int width;
 	protected int height;
+	protected int stepSize = 3;
 	protected boolean visible;
 	protected Image image;
 	

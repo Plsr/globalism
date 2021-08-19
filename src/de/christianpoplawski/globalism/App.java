@@ -4,8 +4,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 public class App extends JFrame {
-	private final int WIDTH = 660;
-	private final int HEIGHT = 660;
+	private final int WIDTH = 30;
+	private final int HEIGHT = 30;
 	
     public App() {
         initUI();
@@ -16,9 +16,8 @@ public class App extends JFrame {
 
         setResizable(false);
         pack();
-
-        setSize(WIDTH, HEIGHT);
         setTitle("animation");
+        System.out.println(getPreferredSize());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
